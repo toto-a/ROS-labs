@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+
+*.xml
+.vscode
+log/
+build/
+install/
+*.pyc
+test/
+setup.py
