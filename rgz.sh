@@ -12,9 +12,9 @@ else
     docker run -d \
         -e DISPLAY=$DISPLAY \
         --env="QT_X11_NO_MITSHM=1" \
-        --env="LIBGL_ALWAYS_SOFTWARE=1" \
+        ## use this flag if opengl rendering is causing problem
+        --env="LIBGL_ALWAYS_SOFTWARE=1" \ 
         --restart=always \
-        -p 8080:80 \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         "$1" bash
     

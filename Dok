@@ -1,0 +1,28 @@
+
+FROM ros:melodic
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+
+# Install Gazebo and other dependencies
+RUN apt-get update && apt-get install -y \
+    gazebo9 \
+    ros-melodic-gazebo-ros-pkgs \
+    ros-melodic-gazebo-ros-control \
+    python3-catkin-tools \
+    build-essential \
+    vim \
+    nano \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up catkin wrkspace
+RUN mkdir -p ~/catkin_ws/src 
+WORKDIR /home/catkin_ws/
+
+# Source the ROS environment and build the workspace in the same RUN command
+RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
+
+# Source the workspace after building
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
+
