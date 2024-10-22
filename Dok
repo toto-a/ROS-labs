@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up catkin wrkspace
-RUN mkdir -p ~/catkin_ws/src 
+RUN mkdir -p /home/catkin_ws/src 
 WORKDIR /home/catkin_ws/
 
 # Source the ROS environment
