@@ -47,9 +47,8 @@ RUN apt-get install ros-melodic-gazebo-ros-pkgs ros-melodic-gazebo-ros-control
 ## Source bash for ros command
 ## go home and source
  
-RUN cd ~
 RUN mkdir -p ~/catkin_ws/src && cd ~/catkin_ws
-WORKDIR /catkin_ws/
+WORKDIR /home/catkin_ws
 RUN  . /opt/ros/melodic/setup.bash
 RUN catkin_make
 RUN apt update

@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p ~/catkin_ws/src 
 WORKDIR /home/catkin_ws/
 
-# Source the ROS environment and build the workspace in the same RUN command
+# Source the ROS environment
 RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
 
 # Source the workspace after building
-RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
+RUN echo "source /home/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
