@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 # Set up catkin wrkspace
 RUN mkdir -p /home/catkin_ws/src 
-WORKDIR /home/catkin_ws/
+WORKDIR /home/catkin_ws
 
 # Source the ROS environment
 RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make"
