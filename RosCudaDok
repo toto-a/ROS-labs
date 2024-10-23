@@ -1,0 +1,61 @@
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN bash
+ENV TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive
+
+
+
+RUN apt update && apt install locales
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+                        software-properties-common \
+                        curl \
+                        apt-utils \
+                        gnupg2 \
+                        lsb-release \
+                        locales \
+                        mesa-utils \
+                        libgl1-mesa-glx \
+                        x11-apps \
+                        gedit \
+                        wget \
+                        python3-pip \
+                        less \
+                        htop \
+                        byobu \
+                        wget
+
+RUN add-apt-repository universe
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    
+# Gazebo
+
+RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+RUN apt-get update
+RUN apt-get install -y gz-harmonic
+
+RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+RUN wget http://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+RUN apt-get update && apt-get install -y libgz-sim6-dev
+
+#ROS
+
+RUN apt update && apt install curl gnupg lsb-release
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+RUN apt update && apt install -y ros-humble-desktop
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc 
+
+RUN apt update && apt-get install -y ros-humble-ros-gzharmonic
+
+
+CMD ["bash"]
+
